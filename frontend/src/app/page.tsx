@@ -1,30 +1,35 @@
 // frontend/src/app/page.tsx
 
-// This function tells Next.js how to get the data for this page.
-// It runs on the server, so it can securely talk to our backend.
-async function getData() {
+// Define a TypeScript interface for the expected shape of our API response.
+// This is a best practice for type safety.
+interface ApiResponse {
+  message: string;
+}
+
+async function getData(): Promise<ApiResponse> {
   try {
-    // We use http://backend:8000 because Docker lets us use the service name 'backend'.
     const res = await fetch('http://backend:8000/api/hello/', { cache: 'no-store' });
 
     if (!res.ok) {
-      // If the response is not OK, return an error message.
-      return { message: `Error fetching data: ${res.statusText}` };
+      return { message: `Error from backend: ${res.statusText}` };
     }
 
-    // Parse the JSON response from Django.
-    return res.json();
-  } catch (error: any) {
-    // If the fetch itself fails (e.g., backend is down), return an error.
+    const data: ApiResponse = await res.json();
+    return data;
+  } catch (error: unknown) { // FIX 1: Use 'unknown' instead of 'any'
     console.error('Fetch error:', error);
-    return { message: `Failed to connect to the backend. Is it running? Error: ${error.message}` };
+    
+    // Check if the error is an instance of Error to safely access its message property
+    if (error instanceof Error) {
+        return { message: `Failed to connect to backend: ${error.message}` };
+    }
+    
+    // Fallback for other types of errors
+    return { message: 'An unknown error occurred while connecting to the backend.' };
   }
 }
 
-
-// This is our main Page component.
 export default async function Home() {
-  // We call our data-fetching function and wait for the result.
   const data = await getData();
 
   return (
@@ -48,7 +53,8 @@ export default async function Home() {
         borderRadius: '8px',
         boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
       }}>
-        Backend says: <strong style={{ color: '#0070f3' }}>"{data.message}"</strong>
+        {/* FIX 2: Use &quot; for quotes inside the string */}
+        Backend says: <strong style={{ color: '#0070f3' }}>&quot;{data.message}&quot;</strong>
       </p>
     </main>
   );

@@ -6,6 +6,6 @@ from rest_framework.response import Response
 @api_view(['GET'])
 def hello_world(request):
     """
-    A test endpoint to confirm the API is working.
+    A test endpoint to confirm the API is working and hotreloading.
     """
     return Response({"message": "Hello from the Django & Docker Backend!"})
