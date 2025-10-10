@@ -1,0 +1,5 @@
+# backend/requirements/base.txt
+django
+djangorestframework
+psycopg2-binary
+python-dotenv
