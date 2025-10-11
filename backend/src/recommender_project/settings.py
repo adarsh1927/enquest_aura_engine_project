@@ -17,7 +17,14 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv()
+
+# This will search for a .env.local file in the project root for native development.
+# The path is constructed by going up three levels from this settings.py file.
+# (recommender_project -> src -> backend -> project root)
+LOCAL_ENV_PATH = BASE_DIR.parent.parent / '.env.local'
+
+if LOCAL_ENV_PATH.exists():
+    load_dotenv(dotenv_path=LOCAL_ENV_PATH)
 
 
 # Quick-start development settings - unsuitable for production

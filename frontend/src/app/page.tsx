@@ -7,8 +7,11 @@ interface ApiResponse {
 }
 
 async function getData(): Promise<ApiResponse> {
+  // Use an environment variable to define the API URL.
+  // process.env lets us access variables in Node.js (which Next.js runs on).
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000';
   try {
-    const res = await fetch('http://backend:8000/api/hello/', { cache: 'no-store' });
+    const res = await fetch(`${apiUrl}/api/hello/`, { cache: 'no-store' });
 
     if (!res.ok) {
       return { message: `Error from backend: ${res.statusText}` };
