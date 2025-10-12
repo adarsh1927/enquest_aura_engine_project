@@ -3,3 +3,5 @@ django
 djangorestframework
 psycopg2-binary
 python-dotenv
+djoser
+djangorestframework-simplejwt
