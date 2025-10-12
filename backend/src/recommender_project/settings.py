@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt', 
-    'djoser',               
+    'djoser',
+    'corsheaders',               
     'users',                    
     'products',
     'api',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -165,3 +167,15 @@ DJOSER = {
 }
 
 AUTH_USER_MODEL = 'users.UserAccount'
+
+# --- CORS (Cross-Origin Resource Sharing) SETTINGS ---
+
+# For development, we allow our frontend's origin.
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+# In production, you would change this to your actual frontend domain, e.g.:
+# CORS_ALLOWED_ORIGINS = [
+#     "https://www.your-style-engine.com",
+# ]
