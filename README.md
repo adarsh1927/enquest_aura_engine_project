@@ -159,15 +159,16 @@ To stop all services, press `Ctrl+C`. To stop and remove the containers, run `do
 
 ## Data Ingestion
 
-The initial product catalog is located in `data/products.csv`. To load this data into your database, run the following Django management command after starting your backend (either natively or with Docker).
+The initial product catalog is located in `data/product_catalog.csv`. To load this data into your database, run the following Django management command after starting your backend (either natively or with Docker).
 
 ```bash
 # If using Docker:
-docker-compose exec backend python src/manage.py import_products data/products.csv
+docker-compose exec backend python src/manage.py import_products data/product_catalog.csv
 
 # If running natively:
 # (from the backend/ directory with venv active)
-python src/manage.py import_products ../data/products.csv
+cd backend/src
+python manage.py import_products data/product_catalog.csv
 ```
 *(Note: We will need to create this `import_products` command and the `data/` directory).*
 

@@ -25,8 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      {/*
+        ADD THESE CLASSES:
+        - bg-gray-50: Sets a light gray background in light mode.
+        - dark:bg-black: Sets a black background in dark mode.
+        - text-gray-900: Sets a dark text color in light mode.
+        - dark:text-gray-100: Sets a light text color in dark mode.
+      */}
+      <body className="bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100">
         <AuthProvider>
           {children}
         </AuthProvider>

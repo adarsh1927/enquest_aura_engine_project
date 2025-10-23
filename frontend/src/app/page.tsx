@@ -8,25 +8,27 @@ export default function Home() {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <main style={{ padding: '2rem', fontFamily: 'sans-serif', textAlign: 'center' }}>
-      <h1 style={{ fontSize: '2.5rem' }}>Welcome to the Style Engine</h1>
+    <main className="flex flex-col items-center justify-center min-h-screen p-8">
+      <h1 className="text-4xl font-bold mb-4">Welcome to the Style Engine</h1>
 
       {isAuthenticated ? (
-        <div>
-          <p style={{ fontSize: '1.2rem', color: 'green' }}>You are logged in!</p>
-          <button onClick={logout} style={{ padding: '0.5rem 1rem', marginTop: '1rem' }}>
+        <div className="text-center">
+          <p className="text-xl text-green-600 mb-4">You are logged in!</p>
+          <Link href="/quiz" className="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 mr-4">
+            Start My Style Quiz
+          </Link>
+          <button onClick={logout} className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-gray-600">
             Log Out
           </button>
-          {/* We will add the "Start Quiz" button here later */}
         </div>
       ) : (
-        <div>
-          <p style={{ fontSize: '1.2rem', color: 'red' }}>You are not logged in.</p>
-          <div style={{ marginTop: '1rem' }}>
-            <Link href="/login" style={{ marginRight: '1rem', color: '#0070f3' }}>
+        <div className="text-center">
+          <p className="text-xl text-red-600 mb-4">Please log in to discover your style.</p>
+          <div>
+            <Link href="/login" className="text-blue-600 hover:underline text-lg mr-4">
               Log In
             </Link>
-            <Link href="/signup" style={{ color: '#0070f3' }}>
+            <Link href="/signup" className="text-blue-600 hover:underline text-lg">
               Sign Up
             </Link>
           </div>
