@@ -7,10 +7,21 @@ import Link from 'next/link';
 export default function Home() {
   const { isAuthenticated, logout } = useAuth();
 
+  // --- ADD THIS CHECK ---
+  // Our AuthContext now returns null while it's checking the auth status.
+  // We should render a loading state during that time to prevent a mismatch.
+  if (isAuthenticated === null) {
+    return (
+      <main className="flex flex-col items-center justify-center min-h-screen p-8">
+        <h1 className="text-4xl font-bold mb-4">Loading...</h1>
+      </main>
+    );
+  }
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-8">
       <h1 className="text-4xl font-bold mb-4">Welcome to the Style Engine</h1>
-
+      
       {isAuthenticated ? (
         <div className="text-center">
           <p className="text-xl text-green-600 mb-4">You are logged in!</p>

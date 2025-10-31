@@ -1,5 +1,4 @@
 # docker-compose.yml
-version: '3.8'
 
 services:
   backend:
@@ -13,6 +12,7 @@ services:
       - ./.env.docker
     depends_on:
       - db
+      - es 
 
   frontend:
     build: ./frontend
@@ -37,5 +37,17 @@ services:
     ports:
       - "5432:5432"
 
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # Disable security for local development
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # Limit memory usage for development
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
 volumes:
   postgres_data:
+  es_data:

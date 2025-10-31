@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -51,7 +52,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt', 
     'djoser',
-    'corsheaders',               
+    'corsheaders',
+    'django_elasticsearch_dsl',               
     'users',                    
     'products',
     'api',
@@ -180,3 +182,21 @@ CORS_ALLOWED_ORIGINS = [
 # CORS_ALLOWED_ORIGINS = [
 #     "https://www.your-style-engine.com",
 # ]
+
+# ELASTICSEARCH CONFIGURATION
+ELASTICSEARCH_HOST = os.environ.get('ELASTICSEARCH_HOST', 'localhost')
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': f'http://{ELASTICSEARCH_HOST}:9200'
+    },
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    # Meaning of Token
+    # access token : if you hack this token even you able acces thing but it will be very shorttime because token refresh soon and changed.
+    # refresh token: refresh and changes the token for this login till this given time after you need to re-enter password.
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}

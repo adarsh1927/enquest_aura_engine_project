@@ -40,20 +40,22 @@ function QuizForm() {
         try {
             await apiService.postAuth('api/quiz/submit/', quizData);
             router.push('/results');
-        } catch (err: any) {
+        } catch (err: unknown) {
             // --- START OF NEW, MORE ROBUST CATCH BLOCK ---------
             setError('Failed to submit quiz. Please check your answers and try again.');
             console.error("Quiz Submission Error:", err);
             
             // Try to parse a more specific message if the backend sent one
-            try {
-                const errorData = JSON.parse(err.message);
-                if (errorData.message) {
-                    setError(errorData.message);
+            if (err instanceof Error) {
+                try {
+                    const errorData = JSON.parse(err.message);
+                    if (errorData.message) {
+                        setError(errorData.message);
+                    }
+                } catch {
+                    // If parsing fails, it's a network error or a simple string
+                    // The original error message is good enough in this case.
                 }
-            } catch (parseError) {
-                // If parsing fails, it's a network error or a simple string
-                // The original error message is good enough in this case.
             }
         } finally {
             setIsLoading(false);

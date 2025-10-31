@@ -53,17 +53,21 @@ export default function AuthForm({ formType }: AuthFormProps) {
         });
         router.push('/login?signupSuccess=true'); // Redirect to login after signup
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setIsLoading(false);
       console.error(err);
       // Check if the error message is a JSON string
-      try {
-        const errorData = JSON.parse(err.message);
-        const specificError = errorData.email?.[0] || errorData.password?.[0] || errorData.detail || 'An unknown error occurred.';
-        setError(specificError);
-      } catch (parseError) {
-        // If it's not JSON, it's likely a network error string like "Failed to fetch"
-        setError(err.message || 'A network error occurred. Is the backend running?');
+      if (err instanceof Error) {
+        try {
+          const errorData = JSON.parse(err.message);
+          const specificError = errorData.email?.[0] || errorData.password?.[0] || errorData.detail || 'An unknown error occurred.';
+          setError(specificError);
+        } catch {
+          // If it's not JSON, it's likely a network error string loike "Failed to fetch"
+          setError(err.message || 'A network error occurred. Is the backend running?');
+        }
+      } else {
+        setError('An unexpected error occurred.');
       }
     } finally {
       setIsLoading(false);
